@@ -1,0 +1,12 @@
+Python
+def circular_array_path(n, m):
+    circle_array = list(range(1, n + 1))
+    position = 0
+    path = []
+    while True:
+        path.append(circle_array[position])  
+        position = (position + m) % n  
+        if position == 0:
+            break
+    
+    return path
