@@ -1,0 +1,45 @@
+import json
+import sys
+
+def load_json(file_path):
+    with open(file_path, 'r') as file:
+        return json.load(file)
+
+def fill_report(tests_structure, values):
+    def fill_test(test):
+        if 'id' in test:
+            test_id = test['id']
+            if test_id in values:
+                test['value'] = values[test_id]['value']
+        if 'tests' in test:
+            for sub_test in test['tests']:
+                fill_test(sub_test)
+    filled_structure = json.loads(json.dumps(tests_structure))
+    for test in filled_structure['tests']:
+        fill_test(test)
+    
+    return filled_structure
+
+def save_json(file_path, data):
+    with open(file_path, 'w') as file:
+        json.dump(data, file, indent=4)
+
+def main():
+    if len(sys.argv) != 4:
+        print("Usage: python script.py values.json tests.json report.json")
+        return
+    
+    values_file = sys.argv[1]
+    tests_file = sys.argv[2]
+    report_file = sys.argv[3]
+
+    values = load_json(values_file)
+    tests_structure = load_json(tests_file)
+
+    report = fill_report(tests_structure, values)
+
+    save_json(report_file, report)
+    print(f"Сохранено")
+
+if __name__ == "__main__":
+    main()
