@@ -1,0 +1,28 @@
+import math
+
+def read_circle_data(file_path):
+    with open(file_path, 'r') as file:
+        data = file.readline().strip().split()
+        center_x = float(data[0])
+        center_y = float(data[1])
+        radius = float(data[2])
+    return center_x, center_y, radius
+
+def point_position_relative_to_circle(center_x, center_y, radius, point_x, point_y):
+    distance = math.sqrt((point_x - center_x) * 2 + (point_y - center_y) * 2)
+    if distance < radius:
+        return "Точка внутри."
+    elif distance == radius:
+        return "Точка снаружи."
+    else:
+        return "Точка снаружи."
+
+def main():
+    center_x, center_y, radius = read_circle_data("circle_data.txt")
+    point_x = float(input("Введите координаты x"))
+    point_y = float(input("Введите координаты y"))
+    result = point_position_relative_to_circle(center_x, center_y, radius, point_x, point_y)
+    print(result)
+
+if __name__ == "__main__":
+    main()
